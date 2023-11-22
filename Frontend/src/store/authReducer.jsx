@@ -1,5 +1,10 @@
-
-import { AUTH_REQUEST, AUTH_SUCCESS, LOGOUT, AUTH_FAILURE } from '../containers/authContainer';
+import {
+  LOGIN,
+  AUTH_REQUEST,
+  AUTH_SUCCESS,
+  LOGOUT,
+  AUTH_FAILURE,
+} from "../containers/authContainer";
 
 const initialState = {
   isAuthenticated: false,
@@ -9,6 +14,13 @@ const initialState = {
 
 var myReducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOGIN: {
+      return {
+        ...state,
+        isLoggedIn: false,
+      };
+    }
+
     case AUTH_REQUEST:
       return {
         ...state,
@@ -18,7 +30,7 @@ var myReducer = (state = initialState, action) => {
         ...state,
         token: action.token,
         isAuthenticated: true,
-        error : null,
+        error: null,
       };
     case AUTH_FAILURE:
       return {
@@ -34,8 +46,8 @@ var myReducer = (state = initialState, action) => {
         isAuthenticated: false,
       };
     default:
-        return state;
+      return state;
   }
-}
+};
 
 export default myReducer;
