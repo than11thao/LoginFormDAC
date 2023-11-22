@@ -1,7 +1,9 @@
-
-import { AUTH_REQUEST, AUTH_SUCCESS, LOGOUT, AUTH_FAILURE } from '../containers/authContainer';
+import ACTIONS from "../actions";
 
 const initialState = {
+  user: [],
+  isLogged: false,
+  isAdmin: false,
   isAuthenticated: false,
   token: null,
   error: null,
@@ -9,33 +11,42 @@ const initialState = {
 
 var myReducer = (state = initialState, action) => {
   switch (action.type) {
-    case AUTH_REQUEST:
+    case ACTIONS.LOGIN:
+      return {
+        ...state,
+        isLogged: true,
+      };
+
+    case ACTIONS.AUTH_REQUEST:
       return {
         ...state,
       };
-    case AUTH_SUCCESS:
+
+    case ACTIONS.AUTH_SUCCESS:
       return {
         ...state,
         token: action.token,
         isAuthenticated: true,
-        error : null,
+        error: null,
       };
-    case AUTH_FAILURE:
+
+    case ACTIONS.AUTH_FAILURE:
       return {
         ...state,
         token: null,
         isAuthenticated: false,
         error: action.error,
       };
-    case LOGOUT:
+
+    case ACTIONS.LOGOUT:
       return {
         ...state,
         token: null,
         isAuthenticated: false,
       };
     default:
-        return state;
+      return state;
   }
-}
+};
 
 export default myReducer;

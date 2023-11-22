@@ -1,78 +1,92 @@
-import React, { useEffect, useRef, useState } from 'react'
-import './LoginForm.scss'
-import LoginService from '../../services/LoginServices';
-import { useNavigate } from 'react-router-dom';
-import { authSuccess, authFailure } from '../../actions';
-import { useDispatch } from 'react-redux';
-import { validate } from '../../utils/validateData';
+import React, { useState } from "react";
+import "./LoginForm.scss";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { dispatchLogin } from "../../redux/actions/authUser";
+import { useDispatch } from "react-redux";
+import { validate } from "../../utils/validateData";
+
+const initialState = {
+  email: "",
+  password: "",
+  err: "",
+  success: "",
+};
 
 const LoginForm = () => {
-    const emailRef = useRef();
-    const passRef = useRef();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const [userInfo, setUserInfo] = useState(null);
+  const [user, setUser] = useState(initialState);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  const { email, password, err, success } = user;
 
-    //Call request login API in Login Service 
-    useEffect(() => {
-        function fetchLogin() {
-            LoginService.login(userInfo).then((res) => {
-                if (res.data.result === 'success') {
-                    dispatch(authSuccess(res.data.data));
-                    navigate('/homepage');
-                }
-                else {
-                    dispatch(authFailure('invalid'));
-                }
-            }).catch(error => {
-                dispatch(authFailure(error));
-            });
-        }
-        if (userInfo !== null) fetchLogin();
-    }, [dispatch, navigate, userInfo]);
+  const handleChangeInput = (e) => {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value, err: "", success: "" });
+  };
 
-    // catch login button click event generate data sent to login API
-    function loginRequest() {
+  // catch login button click event generate data sent to login API
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:5000/api/login", {
+        email,
+        password,
+      });
+      //   setUser({ ...user, err: "", success: res.data.msg });
+      console.log("API Response:", res.data);
+      localStorage.setItem("firstLogin", true);
 
-        let email = emailRef.current.value;
-        let password = passRef.current.value;
-        if (validate(email, password)) {
-            var info = {
-                email: email,
-                password: password
-            }
-            setUserInfo(info);
-        }
+      dispatch(dispatchLogin());
+      navigate.push("/");
+    } catch (err) {
+      console.log(
+        "API response is undefined or does not have the expected structure.",
+        err
+      );
+      //   err.response.data.msg &&
+      //   setUser({ ...user, err: err.response.data.msg, success: "" });
     }
+  };
 
-    // catch enter button click in password event is same login button click 
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            loginRequest()
-        }
-    }
-
-    return (
-        <div className='form'>
-            <form>
-                <label className='title-login'>WELCOME</label>
-                <div className='input-container'>
-                    <input type='email' ref={emailRef} id='email' placeholder='Email' required />
-                </div>
-                <div className='input-container'>
-                    <input type='password' ref={passRef} id='pass' onKeyDown={handleKeyDown} placeholder='Password' required />
-                </div>
-                <div className='button-container'>
-                    <input className='login-button' onClick={loginRequest} type='button' value={'Login'}></input>.
-                </div>
-                <div className='extension-login'>
-                    <button className='login-facebook'>Facebook</button>
-                    <button className='login-gmail'>Google</button>
-                </div>
-            </form>
+  return (
+    <div className="form">
+      <form onSubmit={handleSubmit}>
+        <label className="title-login">WELCOME</label>
+        <div className="input-container">
+          <input
+            type="email"
+            value={email}
+            id="email"
+            name="email"
+            placeholder="Email"
+            onChange={handleChangeInput}
+            required
+          />
         </div>
-    );
-}
+        <div className="input-container">
+          <input
+            type="password"
+            value={password}
+            id="pass"
+            name="password"
+            onChange={handleChangeInput}
+            placeholder="Password"
+            required
+          />
+        </div>
+        <div className="button-container">
+          <button className="login-button" type="submit">
+            Login
+          </button>
+          .
+        </div>
+        <div className="extension-login">
+          <button className="login-facebook">Facebook</button>
+          <button className="login-gmail">Google</button>
+        </div>
+      </form>
+    </div>
+  );
+};
 export default LoginForm;
-
