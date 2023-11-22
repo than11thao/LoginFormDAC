@@ -56,7 +56,7 @@ const LoginForm = () => {
         <div className="input-container">
           <input
             type="email"
-            value={email}
+            value={encodeURI(email)}
             id="email"
             name="email"
             placeholder="Email"
@@ -67,7 +67,7 @@ const LoginForm = () => {
         <div className="input-container">
           <input
             type="password"
-            value={password}
+            value={encodeURI(password)}
             id="pass"
             name="password"
             onChange={handleChangeInput}
