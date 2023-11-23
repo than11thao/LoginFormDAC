@@ -34,6 +34,22 @@ class AccountServices {
             }
         });
     }
+
+    deleteAccount(data,token) {
+      return axios.delete('/delete_user', data, {
+          headers: {
+                'Authorization': `Basic ${token}`
+            }
+      });
+    }
+
+    deleteAllAccount(data,token) {
+      return axios.delete('/delete_all_user', data, {
+          headers: {
+                'Authorization': `Basic ${token}`
+            }
+      });
+    }
 }
 
 export default new AccountServices();
