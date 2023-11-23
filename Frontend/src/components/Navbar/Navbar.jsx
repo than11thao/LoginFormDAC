@@ -1,5 +1,5 @@
 import React from "react";
-import '/Navbar.scss';
+import './Navbar.scss';
 import { BiSidebar } from 'react-icons/bi';
 import { useDispatch} from "react-redux";
 import { logout} from "../../redux/actions/authUser";
@@ -28,3 +28,5 @@ const Navbar = (props) => {
         </ul>
     )
 }
+
+export default Navbar;
