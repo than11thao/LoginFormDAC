@@ -23,14 +23,14 @@ Endpoint - Request - Response - Error Handling…
   }
   ```
   - __Responses:__
-  - Cookies:
   ```
+  Cookies:
   {
     'RefreshToken': refresh_token
   }
   ```
-  - Message:
   ```
+  Message:
   '200' = {
   	'msg': 'Đăng nhập thành công!'
   }
