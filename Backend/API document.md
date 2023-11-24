@@ -9,15 +9,15 @@ Endpoint - Request - Response - Error Handling…
   - Summary: Login
   - Header (Content-Type): application/json
   - __RefreshToken PAYLOAD:__
-  `Payload = {
+  > Payload = {
     "user_id": user_id,
     "role_id": role_id
-  }`
+  }
   - __Request Body:__
-  `{
+  >{
     "email": "string",
     "password": "string"
-  }`
+  }
 
 **Responses:**
 
