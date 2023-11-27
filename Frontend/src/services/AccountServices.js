@@ -1,10 +1,10 @@
 import axios from "axios";
-axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL
+import api from "../api/axios";
 
 class AccountServices {
     //Call request API login by method POST
     getAllAccount(token) {
-        return axios.get('/all_user', {
+        return api.get('/all_user', {
             headers: {
                 'Authorization': `Basic ${token}`
             }
@@ -12,7 +12,7 @@ class AccountServices {
     }
 
     postNewAccount(data, token) {
-        return axios.post('/new_user', data, {
+        return api.post('/new_user', data, {
             headers: {
                 'Authorization': `Basic ${token}`
             }
@@ -20,7 +20,7 @@ class AccountServices {
     }
 
     searchAccount(data,token) {
-        return axios.post('/user_info', data, {
+        return api.post('/user_info', data, {
             headers: {
                 'Authorization': `Basic ${token}`
             }
@@ -28,7 +28,7 @@ class AccountServices {
     }
 
     updateAccount(data, token) {
-        return axios.put('/update_user', data, {
+        return api.put('/update_user', data, {
             headers: {
                 'Authorization': `Basic ${token}`
             }
@@ -36,7 +36,7 @@ class AccountServices {
     }
 
     deleteAccount(data,token) {
-      return axios.delete('/delete_user', data, {
+      return api.delete('/delete_user', data, {
           headers: {
                 'Authorization': `Basic ${token}`
             }
@@ -44,7 +44,7 @@ class AccountServices {
     }
 
     deleteAllAccount(data,token) {
-      return axios.delete('/delete_all_user', data, {
+      return api.delete('/delete_all_user', data, {
           headers: {
                 'Authorization': `Basic ${token}`
             }

@@ -1,29 +1,29 @@
-import React, {useRef, useState,useEffect} from "react";
+import React, { useRef, useState, useEffect } from "react";
 import AccTable from "../AccountTable/AccTable";
 import AccPopup from "../AccountPopup/AccPopup";
 import './Account.scss';
 import AccountServices from "../../services/AccountServices";
-import {useSelector} from "react-redux";
-import {CSVLink} from 'react-csv';
+import { useSelector } from "react-redux";
+import { CSVLink } from 'react-csv';
 
 const Account = () => {
     const searchRef = useRef();
     const [data, setData] = useState([]);
-    const [dataSearch,setDataSearch] = useState({'search':null});
+    const [dataSearch, setDataSearch] = useState({ 'search': null });
     const [isOpenPopup, setOpenPopup] = useState(false);
-    const [isReload,setReload] = useState(true);
+    const [isReload, setReload] = useState(true);
 
-    // const token = useSelector(state => state.token)
-    // useEffect(() => {
-    //     function searchData() {
-    //         AccountServices.searchAccount(dataSearch,token).then((res)=> {
-    //             if(res.data.result === 'success') {
-    //                 setData(res.data.data);
-    //             }
-    //         })
-    //     }
-    //     searchData();
-    // },[isReload])
+    const token = useSelector(state => state.token)
+    useEffect(() => {
+        function searchData() {
+            AccountServices.searchAccount(dataSearch, token).then((res) => {
+                if (res.data.result === 'success') {
+                    setData(res.data.data);
+                }
+            })
+        }
+        searchData();
+    }, [isReload])
 
     function changePopup() {
         setOpenPopup(!isOpenPopup);
@@ -32,7 +32,7 @@ const Account = () => {
 
     function handleSearch() {
         let search = searchRef.current.value;
-        setDataSearch({'search': search});
+        setDataSearch({ 'search': search });
         setReload(!isReload);
     }
 
@@ -40,16 +40,16 @@ const Account = () => {
         <div className='account'>
             <div className='acc-filter-bar'>
                 <div className='acc-search-container'>
-                    <input type='text' id='search-bar' onBlur={handleSearch} ref={searchRef} placeholder='Search'/>
+                    <input type='text' id='search-bar' onBlur={handleSearch} ref={searchRef} placeholder='Search' />
                 </div>
                 <div className='acc-func-btn'>
                     <CSVLink className={'acc-export-btn'} data={data}>Export CSV</CSVLink>
                     <button onClick={changePopup}>Create Account</button>
                 </div>
             </div>
-            {data && <AccTable data={data}/>}
+            {data && <AccTable data={data} />}
             {!data && <div className='acc-nodata-text'>NO DATA</div>}
-            {isOpenPopup && <AccPopup changePopup = {changePopup}/>}
+            {isOpenPopup && <AccPopup changePopup={changePopup} />}
         </div>
     )
 }
