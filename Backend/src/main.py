@@ -27,6 +27,7 @@ def create_app():
         from models.rolesModel import Roles
         from models.userModel import Users
         from models.creativeModel import Creatives
+        
         createTable = db.create_all()
         
         if createTable is not None:

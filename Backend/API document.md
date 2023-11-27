@@ -137,7 +137,10 @@
 
   ```
   {
-  'RefreshToken': null
+    'RefreshToken': null
+    '200' = {
+  		'msg': 'Đăng xuất thành công!'
+    }
   }
   ```
 
@@ -145,9 +148,6 @@
 
   ```
   {
-  '200' = {
-  		'msg': 'Đăng xuất thành công!'
-    }
   '500' = {
   		'msg': 'Unexpected error!'
     }
@@ -155,3 +155,199 @@
   ```
 
   ## User management
+
+  ## Get user
+
+- ### **[GET]/api/user_info**
+  > - Summary: Get user informations
+  > - Header (Authorization): AccessToken[Payload]
+  > - Accessible: User
+  - ### **Request HEADER:**
+  ```
+  {
+    'Authorization': 'Access Token'
+  }
+  ```
+  - ### **Responses:**
+  ```
+  '200' = {
+    "user_id",
+    "email",
+    "first_name",
+    "last_name",
+    "image",
+    "address",
+    "phone",
+    "avatar",
+    "role_id",
+    "create_at",
+    "update_at"
+  }
+  ```
+  - ### **Error Handling:**
+  ```
+  {
+  '400' = {
+  		'msg': 'Invalid Authentication!'
+    }
+  '500' = {
+  		'msg': 'Unexpected error!'
+    }
+  }
+  ```
+- ## Get all users
+- ### **[GET]/api/all_user_info**
+
+  > - Summary: Get all user informations
+  > - Header (Authorization): AccessToken[Payload]
+  > - Accessible: Admin
+
+  - ### **Request HEADER:**
+
+  ```
+  {
+    'Authorization': 'Access Token'
+  }
+  ```
+
+  - ### **Responses:**
+
+  ```
+  '200' = {
+    msg: [
+        user1 = {
+            "user_id",
+            "email",
+            "first_name",
+            "last_name",
+            "image",
+            "address",
+            "phone",
+            "avatar",
+            "role_id",
+            "create_at",
+            "update_at"
+        },
+        user2 = {
+            "user_id",
+            "email",
+            "first_name",
+            "last_name",
+            "image",
+            "address",
+            "phone",
+            "avatar",
+            "role_id",
+            "create_at",
+            "update_at"
+        },
+        ...]
+
+  }
+  ```
+
+  - ### **Error Handling:**
+
+  ```
+  {
+  '400' = {
+  		'msg': 'Invalid Authentication!'
+    }
+  '500' = {
+  		'msg': 'Admin resources access denied!'
+    }
+  }
+  ```
+
+- ## Delete user
+- ### **[GET]/api/delete_user**
+  > - Summary: Delete user by ID
+  > - Header (Authorization): AccessToken[Payload]
+  > - Accessible: Admin
+  - ### **Request HEADER:**
+  ```
+  {
+    'Authorization': 'Access Token'
+  }
+  ```
+  - ### **Responses:**
+  ```
+  '200' = {
+    msg: "Delete User successfully!"
+  }
+  ```
+  - ### **Error Handling:**
+  ```
+  {
+  '400' = {
+  		'msg': 'Invalid Authentication!'
+    }
+  '500' = {
+  		'msg': 'Unexpected Error!'
+    }
+  }
+  ```
+- ## Delete all user
+- ### **[GET]/api/delete_all_user**
+  > - Summary: Delete all users
+  > - Header (Authorization): AccessToken[Payload]
+  > - Accessible: Admin
+  - ### **Request HEADER:**
+  ```
+  {
+    'Authorization': 'Access Token'
+  }
+  ```
+  - ### **Responses:**
+  ```
+  '200' = {
+    msg: "Delete all users successfully!"
+  }
+  ```
+  - ### **Error Handling:**
+  ```
+  {
+  '400' = {
+  		'msg': 'Invalid Authentication!'
+    }
+  '500' = {
+  		'msg': 'Unexpected Error!'
+    }
+  }
+  ```
+- ## Update user
+- ### **[GET]/api/update_user**
+  > - Summary: Update user by ID
+  > - Header (Authorization): AccessToken[Payload]
+  > - Accessible: User
+  - ### **Request HEADER:**
+  ```
+  {
+    'Authorization': 'Access Token',
+    {
+        "email",
+        "first_name",
+        "last_name",
+        "role_id",
+        "address",
+        "phone"
+    }
+  }
+  ```
+  - ### **Responses:**
+  ```
+  '200' = {
+    msg: "Update user successfully!"
+  }
+  ```
+  - ### **Error Handling:**
+  ```
+  {
+  '400' = {
+  		'msg': 'Invalid Authentication!'
+    }
+  '500' = {
+  		'msg': 'Unexpected Error!'
+    }
+  }
+  ```

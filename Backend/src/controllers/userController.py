@@ -201,7 +201,7 @@ class deleteUser(Resource):
                 db.session.commit()
                 return errConfig.statusCode("Delete User successfully!")
             else:
-                return 
+                return errConfig.statusDefault(5)
             
         except Exception as e:
             # return errConfig.statusDefault(4)
@@ -266,12 +266,12 @@ class updateUser(Resource):
             user_updated = Users(id=user_id, email=email, first_name=first_name, last_name=last_name,role_id=role_id,address=address,phone=phone)
             db.session.merge(user_updated)
             db.session.commit()
-            
+            return errConfig.statusCode('Update user successfully!')
         except Exception as e:
             return errConfig.statusCode(str(e),500)
 
 # DELETE ALL USERS
-class updateUser(Resource):
+class deleteAllUser(Resource):
     @authMiddleware
     @authMiddlewareAdmin
     def delete(self):
@@ -280,5 +280,6 @@ class updateUser(Resource):
         try:
             db.session.query(Users).delete()
             db.session.commit()
+            return errConfig.statusCode('Delete all users successfully!')
         except Exception as e:
             return errConfig.statusCode(str(e),500)
