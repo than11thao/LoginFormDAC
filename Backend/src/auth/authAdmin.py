@@ -14,7 +14,7 @@ def authMiddlewareAdmin(func):
     @wraps(func)
     def middlewareAdmin(*args, **kwargs):
         from initSQL import db
-        from models.userModel import User
+        from models.userModel import Users
         try:
             token = request.headers.get("Authorization")
             if not token:

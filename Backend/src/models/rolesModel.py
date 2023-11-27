@@ -5,11 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 from initSQL import db
 
-# class RoleId(enum.Enum):
-#   ADMIN = '1',
-#   DAC = '2',
-#   ADVERTISER = '3'
-
 class Roles(db.Model):
     role_id = db.Column(db.Enum('ADMIN','DAC','ADVERTISER'),default= 'ADMIN', primary_key=True)
     

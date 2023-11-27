@@ -23,10 +23,10 @@ def create_app():
     db.init_app(app)
     
     with app.app_context():
-        from models.campaignModel import Campaign
+        from models.campaignModel import Campaigns
         from models.rolesModel import Roles
-        from models.userModel import User
-        
+        from models.userModel import Users
+        from models.creativeModel import Creatives
         createTable = db.create_all()
         
         if createTable is not None:

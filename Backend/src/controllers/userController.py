@@ -57,29 +57,29 @@ def validate_email(email):
 def find_user_by_email(email):
     from initSQL import db
             
-    from models.userModel import User
-    user = User.query.filter_by(email=email).first()
+    from models.userModel import Users
+    user = Users.query.filter_by(email=email).first()
     return user
 # USER MODELS
 # LOGIN
 class login(Resource):
     def post(self):
         from initSQL import db
-        from models.userModel import User
+        from models.userModel import Users
         
         try:
             content_type = request.headers.get('Content-Type')
             if content_type == "application/json":
                 json= request.get_json()
                 email = json["email"]
-                password = json["password"].encode('utf8')
+                password = json["password"].encode('utf-8')
                 
                 if password=="" or email=="":
                     return errConfig.statusCode("Please fill in email/password field!",401)
                 
-                User = User.query.filter_by(email = email).one_or_404('Account is not exist!')
+                User = Users.query.filter_by(email = email).one_or_404('Account is not exist!')
                 
-                checkPW = bcrypt.checkpw(password, User.password.encode('utf8'))
+                checkPW = bcrypt.checkpw(password, User.password.encode('utf-8'))
                 
                 if not checkPW:
                     return errConfig.statusCode("Wrong password!",401)
@@ -100,14 +100,14 @@ class getAccessToken(Resource):
     def post(self):
         from initSQL import db
                 
-        from models.userModel import User
+        from models.userModel import Users
         try:
             refresh_token = request.cookies.get('RefreshToken')
             
             user = jwt.decode(refresh_token, REFRESH_TOKEN_SECRET, algorithms=["HS256"])
             user_id = user['user_id']
             
-            User = User.query.filter_by(user_id = user_id).one_or_404()
+            User = Users.query.filter_by(user_id = user_id).one_or_404()
             
             
             if not refresh_token:
@@ -116,7 +116,7 @@ class getAccessToken(Resource):
             try:
                 jwt.decode(refresh_token,REFRESH_TOKEN_SECRET,"HS256")
 
-                access_token = createAccessToken(User.user_id,User.role_id)
+                access_token = createAccessToken(Users.user_id,Users.role_id)
 
                 return errConfig.msgFeedback(access_token)
 
@@ -137,7 +137,7 @@ class getUser(Resource):
     @authMiddleware
     def get(self):
         from initSQL import db
-        from models.userModel import User
+        from models.userModel import Users
         
         token = request.headers.get("Authorization")
         if not token:
@@ -146,7 +146,7 @@ class getUser(Resource):
         user = jwt.decode(token, ACCESS_TOKEN_SECRET, algorithms=["HS256"])
         user_id = user['user_id']
         
-        User = User.query.filter_by(user_id = user_id).options(db.defer(User.password)).one_or_404()
+        User = Users.query.filter_by(user_id = user_id).options(db.defer(Users.password)).one_or_404()
         
         User_dict = User.__dict__
         User_dict.pop('_sa_instance_state', None) # Disable _sa_instance_state of SQLAlchemy (_sa_instance_state can't convert JSON)
@@ -158,11 +158,19 @@ class getAllUser(Resource):
     @authMiddlewareAdmin
     def get(self):
         from initSQL import db
-        from models.userModel import User
+        from models.userModel import Users
         
-        users = User.query.options(db.defer(User.password)).all()
+        users = Users.query.options(db.defer(Users.password)).all()
         # Users = db.session.execute(db.select(User).order_by(User.user_id).options(db.defer(User.password))).all()
-        tuple_user = [{'user_id': user.user_id,'first_name': user.first_name, 'last_name': user.last_name,'email': user.email, 'create_at': user.create_at,'update_at': user.update_at,'image': user.image,'role_id': user.role_id} for user in users]
+        tuple_user = [{'user_id': user.user_id,
+                       'first_name': user.first_name, 
+                       'last_name': user.last_name,
+                       'email': user.email, 
+                       'create_at': user.create_at,
+                       'update_at': user.update_at,
+                       'image': user.image,
+                       'role_id': user.role_id} 
+                    for user in users]
 
         return jsonify(users=tuple_user)
 # LOGOUT
@@ -180,14 +188,14 @@ class deleteUser(Resource):
     @authMiddlewareAdmin
     def delete(self):
         from initSQL import db
-        from models.userModel import User
+        from models.userModel import Users
         try:
             access_token = request.header.get('Authorization')
             
             user = jwt.decode(refresh_token, ACCESS_TOKEN_SECRET, algorithms=["HS256"])
             user_id = user['user_id']
             
-            User = User.query.filter_by(user_id = user_id).one_or_404()
+            User = Users.query.filter_by(user_id = user_id).one_or_404()
             if User:
                 db.session.delete(User)
                 db.session.commit()
@@ -204,7 +212,7 @@ class addUser(Resource):
     @authMiddlewareAdmin
     def post(self):
         from initSQL import db
-        from models.userModel import User
+        from models.userModel import Users
 
         try:
             json = request.get_json()
@@ -225,7 +233,7 @@ class addUser(Resource):
             
             hashed_password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
             
-            user = User(first_name=first_name,last_name=last_name,email=email,password=hashed_password,role_id=role_id)
+            user = Users(first_name=first_name,last_name=last_name,email=email,password=hashed_password,role_id=role_id)
             db.session.add(user)
             db.session.commit()
             return errConfig.statusCode("Add User successfully!")
@@ -236,7 +244,7 @@ class updateUser(Resource):
     @authMiddleware
     def put(self):
         from initSQL import db
-        from models.userModel import User
+        from models.userModel import Users
 
         token = request.headers.get("Authorization")
         if not token:
@@ -253,9 +261,9 @@ class updateUser(Resource):
             user = jwt.decode(token, ACCESS_TOKEN_SECRET, algorithms=["HS256"])
             user_id = user['user_id']
             
-            user_to_update = User.query.filter_by(id=user_id).first()
+            user_to_update = Users.query.filter_by(id=user_id).first()
             
-            user_updated = User(id=user_id, email=email, first_name=first_name, last_name=last_name,role_id=role_id,address=address,phone=phone)
+            user_updated = Users(id=user_id, email=email, first_name=first_name, last_name=last_name,role_id=role_id,address=address,phone=phone)
             db.session.merge(user_updated)
             db.session.commit()
             
@@ -268,9 +276,9 @@ class updateUser(Resource):
     @authMiddlewareAdmin
     def delete(self):
         from initSQL import db
-        from models.userModel import User
+        from models.userModel import Users
         try:
-            db.session.query(User).delete()
+            db.session.query(Users).delete()
             db.session.commit()
         except Exception as e:
             return errConfig.statusCode(str(e),500)
