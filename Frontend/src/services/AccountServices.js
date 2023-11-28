@@ -1,14 +1,13 @@
-import axios from "axios";
 import api from "../api/axios";
 
 class AccountServices {
   //Call request API login by method POST
   userLogin(data) {
-    return api.post("/api/login", data);
+    return api.post("/api/login", data, { withCredentials: true });
   }
 
-  getAccessToken() {
-    return api.post("/api/refresh_token");
+  getAccessToken(data) {
+    return api.post("/api/refresh_token", data, { withCredentials: true });
   }
 
   getAllAccount(data) {
@@ -20,7 +19,7 @@ class AccountServices {
   }
 
   searchAccount(header) {
-    return api.post("/api/user_info", header);
+    return api.get("/api/user_info", header);
   }
 
   updateAccount(data) {

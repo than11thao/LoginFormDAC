@@ -1,19 +1,12 @@
-import { React, useEffect, useState } from "react";
+import { React, useState } from "react";
 import NavBar from "../../components/Navbar/Navbar";
 import Banner from "../../components/Banner/Banner";
 import SideBar from "../../components/SideBar/SideBar";
 import "./HomePage.scss";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import {
-  OPEN_CAMPAIGN,
-  OPEN_ACCOUNT,
-  OPEN_DASHBOARD,
-} from "../../containers/menuContainer";
+import { OPEN_ACCOUNT, OPEN_DASHBOARD } from "../../containers/menuContainer";
 import Account from "../../components/Account/Account";
 
 const HomePage = () => {
-  // const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState(OPEN_DASHBOARD);
   const [isOpenSideBar, setIsOpenSideBar] = useState(true);
 

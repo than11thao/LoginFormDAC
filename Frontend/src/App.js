@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import {
   dispatchLogin,
   fetchUser,
@@ -9,6 +9,7 @@ import {
 
 import NotFound from "./utils/NotFound/NotFound";
 import AccountServices from "./services/AccountServices";
+import axios from "axios";
 
 const LazyLoginPage = lazy(() => import("./views/LoginPage/LoginPage"));
 const LazyHomePage = lazy(() => import("./views/HomePage/HomePage"));
@@ -19,17 +20,18 @@ function App() {
   const token = useSelector((state) => state.token);
   const auth = useSelector((state) => state.auth);
 
+  const { isLogged, isAdmin } = auth;
   useEffect(() => {
     const firstLogin = localStorage.getItem("firstLogin");
     if (firstLogin) {
       const getToken = async () => {
-        const res = AccountServices.getAccessToken();
+        const res = await AccountServices.getAccessToken(null);
         console.log(res);
         dispatch({ type: "GET_TOKEN", payload: res.data });
       };
       getToken();
     }
-  }, [auth.isLogged, dispatch]);
+  }, [isLogged]);
 
   useEffect(() => {
     if (token) {
@@ -46,32 +48,17 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        {
-          <Route
-            path="/"
-            element={
-              <Suspense fallback={<div>Loading...</div>}>
-                <LazyHomePage />
-              </Suspense>
-            }
-          />
-        }
-        {
-          <Route
-            path="/login"
-            element={
-              auth.isLogged ? (
-                NotFound
-              ) : (
-                <Suspense fallback={<div>Loading...</div>}>
-                  <LazyLoginPage />
-                </Suspense>
-              )
-            }
-          />
-        }
-      </Routes>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          {<Route path="/" element={<LazyHomePage />} />}
+          {
+            <Route
+              path="/login"
+              element={isLogged ? <Navigate to="/" /> : <LazyLoginPage />}
+            />
+          }
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }

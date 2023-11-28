@@ -4,8 +4,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { dispatchLogin } from "../../redux/actions/authAction";
 import { useDispatch } from "react-redux";
-import { validate } from "../../utils/validateData";
 import AccountServices from "../../services/AccountServices";
+import {
+  showSuccessMsg,
+  showErrMsg,
+} from "../../utils/Notification/Notification";
 
 const initialState = {
   email: "",
@@ -30,17 +33,17 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (validate(email, password)) {
-        const res = await AccountServices.userLogin({
-          email,
-          password,
-        });
-        setUser({ ...user, err: "", success: res.data.msg });
-        localStorage.setItem("firstLogin", true);
+      const res = await AccountServices.userLogin({
+        email,
+        password,
+      });
 
-        dispatch(dispatchLogin());
-        navigate("/");
-      }
+      setUser({ ...user, err: "", success: res.data.msg });
+
+      localStorage.setItem("firstLogin", true);
+
+      dispatch(dispatchLogin());
+      navigate("/");
     } catch (err) {
       err.response.data.msg &&
         setUser({ ...user, err: err.response.data.msg, success: "" });
@@ -51,10 +54,12 @@ const LoginForm = () => {
     <div className="form">
       <form onSubmit={handleSubmit}>
         <label className="title-login">WELCOME</label>
+        {err && showErrMsg(err)}
+        {success && showSuccessMsg(success)}
         <div className="input-container">
           <input
             type="email"
-            value={encodeURI(email)}
+            value={email}
             id="email"
             name="email"
             placeholder="Email"
@@ -65,7 +70,7 @@ const LoginForm = () => {
         <div className="input-container">
           <input
             type="password"
-            value={encodeURI(password)}
+            value={password}
             id="pass"
             name="password"
             onChange={handleChangeInput}

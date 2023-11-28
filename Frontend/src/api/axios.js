@@ -1,18 +1,11 @@
 import axios from "axios";
 
-const getAccessToken = () => {
-  const accessToken = localStorage.getItem("accessToken");
-  let token = "";
-  if (accessToken) {
-    token = accessToken.replace(/"/g, "");
-  }
-  return token;
-};
-
-function buildApi() {
+function buildApi(url) {
   const instance = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL,
-    withCredentials: false,
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
   // instance.interceptors.request.use((config) => ({
   //     ...config,
