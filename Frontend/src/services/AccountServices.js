@@ -2,31 +2,38 @@ import axios from "axios";
 import api from "../api/axios";
 
 class AccountServices {
-    //Call request API login by method POST
-    getAllAccount() {
-        return api.get('/all_user');
-    }
+  //Call request API login by method POST
+  userLogin(data) {
+    return api.post("/api/login", data);
+  }
 
-    postNewAccount(data) {
-        return api.post('/new_user', data);
-    }
+  getAccessToken() {
+    return api.post("/api/refresh_token");
+  }
 
-    searchAccount(data) {
-        return api.post('/user_info',data);
-    }
+  getAllAccount(data) {
+    return api.get("/api/all_user_info", data);
+  }
 
-    updateAccount(data) {
-        return api.put('/update_user', data);
-    }
+  postNewAccount(data) {
+    return api.post("/api/add_user", data);
+  }
 
-    deleteAccount(data) {
-      return api.delete('/delete_user', data);
-    }
+  searchAccount(header) {
+    return api.post("/api/user_info", header);
+  }
 
-    deleteAllAccount(data) {
-      return api.delete('/delete_all_user', data);
-    }
+  updateAccount(data) {
+    return api.put("/api/update_user", data);
+  }
+
+  deleteAccount(data) {
+    return api.delete("/api/delete_user", data);
+  }
+
+  deleteAllAccount(data) {
+    return api.delete("/api/delete_all_user", data);
+  }
 }
 
 export default new AccountServices();
-

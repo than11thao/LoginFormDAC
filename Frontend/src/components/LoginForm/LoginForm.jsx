@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import "./LoginForm.scss";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { dispatchLogin } from "../../redux/actions/authUser";
+import { dispatchLogin } from "../../redux/actions/authAction";
 import { useDispatch } from "react-redux";
 import { validate } from "../../utils/validateData";
+import AccountServices from "../../services/AccountServices";
 
 const initialState = {
   email: "",
@@ -29,16 +30,17 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/login", {
-        email,
-        password,
-      });
-      setUser({ ...user, err: "", success: res.data.msg });
-      console.log("API Response:", res.data);
-      localStorage.setItem("accessToken", res.data.accessToken);
+      if (validate(email, password)) {
+        const res = await AccountServices.userLogin({
+          email,
+          password,
+        });
+        setUser({ ...user, err: "", success: res.data.msg });
+        localStorage.setItem("firstLogin", true);
 
-      dispatch(dispatchLogin());
-      navigate("/home");
+        dispatch(dispatchLogin());
+        navigate("/");
+      }
     } catch (err) {
       err.response.data.msg &&
         setUser({ ...user, err: err.response.data.msg, success: "" });
