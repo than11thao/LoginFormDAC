@@ -13,10 +13,9 @@ const Account = () => {
     const [isOpenPopup, setOpenPopup] = useState(false);
     const [isReload, setReload] = useState(true);
 
-    const token = useSelector(state => state.token)
     useEffect(() => {
         function searchData() {
-            AccountServices.searchAccount(dataSearch, token).then((res) => {
+            AccountServices.searchAccount(dataSearch).then((res) => {
                 if (res.data.result === 'success') {
                     setData(res.data.data);
                 }

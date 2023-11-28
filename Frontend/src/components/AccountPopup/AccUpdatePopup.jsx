@@ -36,7 +36,6 @@ const AccPopup = (props) => {
         setUser(prevUser => ({ ...prevUser, role: event.target.value }));
     }
 
-    const token = useSelector(state => state.token)
     const emailRef = useRef();
     const firstNameRef = useRef();
     const lastNameRef = useRef();
@@ -72,7 +71,7 @@ const AccPopup = (props) => {
             "id": id
         }
         // console.log(dataAcc);
-        const res = await AccountServices.updateAccount(dataAcc, token);
+        const res = await AccountServices.updateAccount(dataAcc);
         if (res.data.result === 'success') {
             alert('UPDATE ACCOUNT SUCCESSFULLY!');
             closePopup();

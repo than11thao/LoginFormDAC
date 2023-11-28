@@ -35,7 +35,7 @@ const LoginForm = () => {
       });
       setUser({ ...user, err: "", success: res.data.msg });
       console.log("API Response:", res.data);
-      localStorage.setItem("firstLogin", true);
+      localStorage.setItem("accessToken", res.data.accessToken);
 
       dispatch(dispatchLogin());
       navigate("/home");

@@ -6,7 +6,6 @@ import AccountServices from "../../services/AccountServices";
 import { useSelector } from "react-redux";
 
 const AccPopup = (props) => {
-    const token = useSelector(state => state.token)
 
     const emailRef = useRef();
     const firstNameRef = useRef();
@@ -46,7 +45,7 @@ const AccPopup = (props) => {
             "confirm_password": confirm
         }
         // console.log(token);
-        const res = await AccountServices.postNewAccount(dataAcc, token)
+        const res = await AccountServices.postNewAccount(dataAcc)
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
