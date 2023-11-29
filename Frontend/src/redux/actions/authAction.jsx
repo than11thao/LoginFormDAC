@@ -9,17 +9,18 @@ export const dispatchLogin = () => {
 
 export const fetchUser = async (token) => {
   const res = await AccountServices.searchAccount({
-    header: { Authorization: token },
+    headers: { Authorization: token },
   });
   return res;
 };
 
 export const dispatchGetUser = (res) => {
+  console.log(res);
   return {
     type: ACTIONS.GET_USER,
     payload: {
       user: res.data,
-      isAdmin: res.data.role_id === 1 ? true : false,
+      isAdmin: res.data.role_id === "ADMIN" ? true : false,
     },
   };
 };

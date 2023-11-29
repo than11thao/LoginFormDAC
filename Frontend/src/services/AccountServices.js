@@ -10,20 +10,16 @@ class AccountServices {
     return api.post("/api/refresh_token", data, { withCredentials: true });
   }
 
-  getAllAccount(data) {
-    return api.get("/api/all_user_info", data);
+  getAllAccount(token) {
+    return api.get("/api/all_user_info", token, { withCredentials: true });
   }
 
   postNewAccount(data) {
     return api.post("/api/add_user", data);
   }
 
-  searchAccount(token) {
-    return api.get("/api/user_info", {
-      headers: {
-        Authorization: token,
-      },
-    });
+  searchAccount(data) {
+    return api.get("/api/user_info", data);
   }
 
   updateAccount(data) {

@@ -7,7 +7,6 @@ import {
   dispatchGetUser,
 } from "./redux/actions/authAction";
 
-import NotFound from "./utils/NotFound/NotFound";
 import AccountServices from "./services/AccountServices";
 import axios from "axios";
 
@@ -26,18 +25,16 @@ function App() {
     if (firstLogin) {
       const getToken = async () => {
         const res = await AccountServices.getAccessToken(null);
-        console.log(res);
-        // dispatch({ type: "GET_TOKEN", payload: res.data });
+        dispatch({ type: "GET_TOKEN", payload: res.data });
       };
       getToken();
     }
-  }, [isLogged]);
+  }, [isLogged, dispatch]);
 
   useEffect(() => {
     if (token) {
       const getUser = () => {
         dispatch(dispatchLogin());
-
         return fetchUser(token).then((res) => {
           dispatch(dispatchGetUser(res));
         });
@@ -50,7 +47,12 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          {<Route path="/" element={<LazyHomePage />} />}
+          {
+            <Route
+              path="/"
+              element={isLogged ? <LazyHomePage /> : <Navigate to="/login" />}
+            />
+          }
           {
             <Route
               path="/login"

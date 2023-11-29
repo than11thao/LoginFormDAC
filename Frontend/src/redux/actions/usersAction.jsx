@@ -3,7 +3,7 @@ import ACTIONS from "./index";
 
 export const fetchAllUsers = async (token) => {
   const res = await AccountServices.getAllAccount({
-    header: { Authorization: token },
+    headers: { Authorization: token },
   });
   return res;
 };
