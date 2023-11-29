@@ -27,7 +27,7 @@ function App() {
       const getToken = async () => {
         const res = await AccountServices.getAccessToken(null);
         console.log(res);
-        dispatch({ type: "GET_TOKEN", payload: res.data });
+        // dispatch({ type: "GET_TOKEN", payload: res.data });
       };
       getToken();
     }
