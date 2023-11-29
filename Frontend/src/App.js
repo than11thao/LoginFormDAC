@@ -25,7 +25,6 @@ function App() {
     if (firstLogin) {
       const getToken = async () => {
         const res = await AccountServices.getAccessToken(null);
-        console.log(res);
         dispatch({ type: "GET_TOKEN", payload: res.data });
       };
       getToken();
@@ -36,9 +35,7 @@ function App() {
     if (token) {
       const getUser = () => {
         dispatch(dispatchLogin());
-        console.log(token);
         return fetchUser(token).then((res) => {
-          console.log(res);
           dispatch(dispatchGetUser(res));
         });
       };

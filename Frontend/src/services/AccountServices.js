@@ -10,8 +10,8 @@ class AccountServices {
     return api.post("/api/refresh_token", data, { withCredentials: true });
   }
 
-  getAllAccount(data) {
-    return api.get("/api/all_user_info", data);
+  getAllAccount(token) {
+    return api.get("/api/all_user_info", token, { withCredentials: true });
   }
 
   postNewAccount(data) {

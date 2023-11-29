@@ -72,8 +72,8 @@ const Account = () => {
   useEffect(() => {
     if (isAdmin) {
       fetchAllUsers(token).then((res) => {
-        console.log(token);
         dispatch(dispatchGetAllUsers(res));
+        setData([res.data]);
       });
     }
   }, [token, isAdmin, dispatch, isReload]);
@@ -94,6 +94,7 @@ const Account = () => {
       {err && showErrMsg(err)}
       {success && showSuccessMsg(success)}
       {loading && <h3>Loading.....</h3>}
+
       <div className="acc-filter-bar">
         <div className="acc-search-container">
           <input

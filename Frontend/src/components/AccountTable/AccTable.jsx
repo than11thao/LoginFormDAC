@@ -27,7 +27,7 @@ const AccTable = (props) => {
     page,
     rowsPerPage
   );
-
+  console.log(props.data);
   function renderTable() {
     return slice.map((user) => {
       return (
@@ -64,7 +64,7 @@ const AccTable = (props) => {
             <th>Actions</th>
           </tr>
         </thead>
-        {console.log(props)}
+        {/* {console.log(props)} */}
         <tbody>{props.data && renderTable(props.data)}</tbody>
       </table>
       <Footer range={range} slice={slice} setPage={setPage} page={page} />
