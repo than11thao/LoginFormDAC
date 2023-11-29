@@ -45,8 +45,7 @@ const LoginForm = () => {
       dispatch(dispatchLogin());
       navigate("/");
     } catch (err) {
-      err.response.data.msg &&
-        setUser({ ...user, err: err.response.data.msg, success: "" });
+      err.message && setUser({ ...user, err: err.message, success: "" });
     }
   };
 
@@ -56,6 +55,7 @@ const LoginForm = () => {
         <label className="title-login">WELCOME</label>
         {err && showErrMsg(err)}
         {success && showSuccessMsg(success)}
+
         <div className="input-container">
           <input
             type="email"

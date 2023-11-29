@@ -18,8 +18,8 @@ class AccountServices {
     return api.post("/api/add_user", data);
   }
 
-  searchAccount(header) {
-    return api.get("/api/user_info", header);
+  searchAccount(data) {
+    return api.get("/api/user_info", data);
   }
 
   updateAccount(data) {
