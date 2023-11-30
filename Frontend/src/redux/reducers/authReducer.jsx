@@ -25,6 +25,14 @@ var authReducer = (state = initialState, action) => {
         token: action.payload.token,
         isAdmin: action.payload.isAdmin,
       };
+    case ACTIONS.ADD_USER:
+      console.log(action.payload);
+      return {
+        ...state,
+        // user: [...state.user, action.payload.user],
+        token: action.payload.token,
+        isAdmin: action.payload.isAdmin,
+      };
     default:
       return state;
   }

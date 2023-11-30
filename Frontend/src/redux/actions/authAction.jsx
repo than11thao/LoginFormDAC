@@ -15,9 +15,25 @@ export const fetchUser = async (token) => {
 };
 
 export const dispatchGetUser = (res) => {
-  console.log(res);
   return {
     type: ACTIONS.GET_USER,
+    payload: {
+      user: res.data,
+      isAdmin: res.data.role_id === "ADMIN" ? true : false,
+    },
+  };
+};
+
+export const fetchAddUser = async (token) => {
+  const res = await AccountServices.postNewAccount({
+    headers: { Authorization: token },
+  });
+  return res;
+};
+
+export const dispatchAddUser = (res) => {
+  return {
+    type: ACTIONS.ADD_USER,
     payload: {
       user: res.data,
       isAdmin: res.data.role_id === "ADMIN" ? true : false,

@@ -19,25 +19,23 @@ const AccTable = (props) => {
   const changePopup = () => {
     setOpenPopup(!isOpenPopup);
   };
-
   const rowsPerPage = 10;
   const [page, setPage] = useState(1);
   const { pageData: slice, pages: range } = useTable(
-    props.data,
+    props.data || [],
     page,
     rowsPerPage
   );
-  console.log(props.data);
   function renderTable() {
-    return slice.map((user) => {
+    return slice.map((user, key) => {
       return (
         <tr key={user.user_id}>
-          <td>{user.id}</td>
-          <td>{`${user.last_name} ${user.first_name}`}</td>
+          <td>{user.user_id}</td>
+          <td>{` ${user.first_name} ${user.last_name}`}</td>
           <td>{user.email}</td>
           <td>{user.address}</td>
           <td>{user.phone}</td>
-          <td>{user.role}</td>
+          <td>{user.role_id}</td>
           <td>
             <AiFillEdit
               className="edit-btn"
@@ -65,7 +63,7 @@ const AccTable = (props) => {
           </tr>
         </thead>
         {/* {console.log(props)} */}
-        <tbody>{props.data && renderTable(props.data)}</tbody>
+        <tbody>{renderTable()}</tbody>
       </table>
       <Footer range={range} slice={slice} setPage={setPage} page={page} />
       {isOpenPopup && <AccPopup changePopup={changePopup} />}

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { AiOutlineDown, AiOutlineClose } from "react-icons/ai";
 import "./AccPopup.scss";
 import {
@@ -10,7 +10,21 @@ import {
   INVALID_PHONE,
 } from "../../containers/alertContainer";
 import AccountServices from "../../services/AccountServices";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchAddUser, dispatchAddUser } from "../../redux/actions/authAction";
+
+const initialState = {
+  email: "",
+  password: "",
+  first_name: "",
+  last_name: "",
+  role_id: "",
+  address: "",
+  phone: "",
+  confirm_password: "",
+  err: "",
+  success: "",
+};
 
 const AccPopup = (props) => {
   const emailRef = useRef();
@@ -21,7 +35,26 @@ const AccPopup = (props) => {
   const phoneRef = useRef();
   const passwordRef = useRef();
   const confirmRef = useRef();
+
+  const auth = useSelector((state) => state.auth);
+  const token = useSelector((state) => state.token);
+
+  const { isAdmin } = auth;
+
+  const [data, setData] = useState(initialState);
   const [isDropDetail, setDropDetail] = useState(true);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isAdmin) {
+      fetchAddUser(token).then((res) => {
+        dispatch(dispatchAddUser(res));
+        setData(res.data);
+        console.log(res);
+      });
+    }
+  }, [token, isAdmin, dispatch, setData]);
 
   const closePopup = () => {
     props.changePopup();
@@ -35,23 +68,13 @@ const AccPopup = (props) => {
     const password = passwordRef.current.value;
     const confirm = confirmRef.current.value;
     const email = emailRef.current.value;
-    const fristName = firstNameRef.current.value;
-    const lastName = lastNameRef.current.value;
-    const role = roleRef.current.value;
+    const first_name = firstNameRef.current.value;
+    const last_name = lastNameRef.current.value;
+    const role_id = roleRef.current.value;
     const address = addressRef.current.value;
     const phone = phoneRef.current.value;
-    const dataAcc = {
-      email: email,
-      password: password,
-      first_name: fristName,
-      last_name: lastName,
-      role: parseInt(role),
-      address: address,
-      phone: phone,
-      confirm_password: confirm,
-    };
-    // console.log(token);
-    const res = await AccountServices.postNewAccount(dataAcc);
+
+    const res = await AccountServices.postNewAccount(data);
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
@@ -76,7 +99,7 @@ const AccPopup = (props) => {
       alert(INVALID_PHONE);
       return;
     }
-
+    console.log(res);
     if (res.data.result === "success") {
       alert(ADD_NEW_ACCOUNT_SUCCESSFULLY);
       closePopup();

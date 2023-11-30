@@ -15,7 +15,7 @@ class AccountServices {
   }
 
   postNewAccount(data) {
-    return api.post("/api/add_user", data);
+    return api.post("/api/add_user", data, { withCredentials: true });
   }
 
   searchAccount(data) {

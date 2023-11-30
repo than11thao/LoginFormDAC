@@ -32,7 +32,7 @@ const Account = () => {
   const auth = useSelector((state) => state.auth);
   const token = useSelector((state) => state.token);
 
-  const { user, isAdmin } = auth;
+  const { isAdmin } = auth;
   const [data, setData] = useState([initialState]);
   const {
     user_id,
@@ -54,21 +54,6 @@ const Account = () => {
 
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   function searchData() {
-  //     AccountServices.searchAccount(dataSearch, {
-  //       headers: { Authorization: token },
-  //     }).then((res) => {
-  //       console.log(res);
-  //       if (res.status === "success") {
-  //         res(res.data);
-  //         setData(res.data.data);
-  //       }
-  //     });
-  //   }
-  //   searchData();
-  // }, [isReload]);
-
   useEffect(() => {
     if (isAdmin) {
       fetchAllUsers(token).then((res) => {
@@ -76,7 +61,7 @@ const Account = () => {
         setData([res.data]);
       });
     }
-  }, [token, isAdmin, dispatch, isReload]);
+  }, [token, isAdmin, dispatch, isReload, setData]);
 
   function changePopup() {
     setOpenPopup(!isOpenPopup);
@@ -112,7 +97,7 @@ const Account = () => {
           <button onClick={changePopup}>Create Account</button>
         </div>
       </div>
-      {data && <AccTable data={data} />}
+      {data && <AccTable data={data[0].users} />}
       {!data && <div className="acc-nodata-text">NO DATA</div>}
       {isOpenPopup && <AccPopup changePopup={changePopup} />}
     </div>
