@@ -5,6 +5,8 @@ import {
   dispatchLogin,
   fetchUser,
   dispatchGetUser,
+  fetchAddUser,
+  dispatchAddUser,
 } from "./redux/actions/authAction";
 
 import AccountServices from "./services/AccountServices";
@@ -40,6 +42,13 @@ function App() {
         });
       };
       getUser();
+      const addUser = () => {
+        dispatch(dispatchLogin());
+        return fetchAddUser(token).then((res) => {
+          dispatch(dispatchAddUser(res));
+        });
+      };
+      addUser();
     }
   }, [token, dispatch]);
 

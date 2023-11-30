@@ -38,7 +38,7 @@ const AccPopup = (props) => {
 
   const auth = useSelector((state) => state.auth);
   const token = useSelector((state) => state.token);
-
+  console.log(auth);
   const { isAdmin } = auth;
 
   const [data, setData] = useState(initialState);
@@ -51,7 +51,7 @@ const AccPopup = (props) => {
       fetchAddUser(token).then((res) => {
         dispatch(dispatchAddUser(res));
         setData(res.data);
-        console.log(res);
+        console.log(res.data);
       });
     }
   }, [token, isAdmin, dispatch, setData]);

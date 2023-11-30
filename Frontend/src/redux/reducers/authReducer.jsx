@@ -26,7 +26,7 @@ var authReducer = (state = initialState, action) => {
         isAdmin: action.payload.isAdmin,
       };
     case ACTIONS.ADD_USER:
-      console.log(action.payload);
+      console.log(action);
       return {
         ...state,
         // user: [...state.user, action.payload.user],
