@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { AiOutlineDown, AiOutlineClose } from "react-icons/ai";
 import "./AccPopup.scss";
 import {
@@ -10,8 +10,7 @@ import {
   INVALID_PHONE,
 } from "../../containers/alertContainer";
 import AccountServices from "../../services/AccountServices";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchAddUser, dispatchAddUser } from "../../redux/actions/authAction";
+import { useSelector } from "react-redux";
 
 const initialState = {
   email: "",
@@ -27,34 +26,52 @@ const initialState = {
 };
 
 const AccPopup = (props) => {
-  const emailRef = useRef();
-  const firstNameRef = useRef();
-  const lastNameRef = useRef();
-  const roleRef = useRef();
-  const addressRef = useRef();
-  const phoneRef = useRef();
-  const passwordRef = useRef();
-  const confirmRef = useRef();
-
-  const auth = useSelector((state) => state.auth);
   const token = useSelector((state) => state.token);
-  console.log(auth);
-  const { isAdmin } = auth;
-
-  const [data, setData] = useState(initialState);
+  console.log(token);
+  const [formData, setFormData] = useState(initialState);
   const [isDropDetail, setDropDetail] = useState(true);
 
-  const dispatch = useDispatch();
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  useEffect(() => {
-    if (isAdmin) {
-      fetchAddUser(token).then((res) => {
-        dispatch(dispatchAddUser(res));
-        setData(res.data);
-        console.log(res.data);
-      });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await AccountServices.postNewAccount(formData, token);
+      console.log(res);
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const passwordRegex =
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+      const phoneRegex = /^\d{10}$/;
+
+      if (!emailRegex.test(formData.email)) {
+        alert(INVALID_EMAIL);
+        return;
+      }
+
+      if (!passwordRegex.test(formData.password)) {
+        alert(INVALID_PASSWORD);
+        return;
+      }
+
+      if (formData.password !== formData.confirm_password) {
+        alert(WRONG_CONFIRM_PASSWORD);
+        return;
+      }
+
+      if (!phoneRegex.test(formData.phone)) {
+        alert(INVALID_PHONE);
+        return;
+      }
+
+      alert(ADD_NEW_ACCOUNT_SUCCESSFULLY);
+      closePopup();
+    } catch (error) {
+      alert(ERROR_ADD_NEW_ACCOUNT_FAILED);
+      console.error("Error adding user:", error);
     }
-  }, [token, isAdmin, dispatch, setData]);
+  };
 
   const closePopup = () => {
     props.changePopup();
@@ -64,53 +81,9 @@ const AccPopup = (props) => {
     setDropDetail(!isDropDetail);
   };
 
-  async function handleSubmit() {
-    const password = passwordRef.current.value;
-    const confirm = confirmRef.current.value;
-    const email = emailRef.current.value;
-    const first_name = firstNameRef.current.value;
-    const last_name = lastNameRef.current.value;
-    const role_id = roleRef.current.value;
-    const address = addressRef.current.value;
-    const phone = phoneRef.current.value;
-
-    const res = await AccountServices.postNewAccount(data);
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
-    const phoneRegex = /^\d{10}$/;
-
-    if (!emailRegex.test(email)) {
-      alert(INVALID_EMAIL);
-      return;
-    }
-
-    if (!passwordRegex.test(password)) {
-      alert(INVALID_PASSWORD);
-      return;
-    }
-
-    if (password !== confirm) {
-      alert(WRONG_CONFIRM_PASSWORD);
-      return;
-    }
-
-    if (!phoneRegex.test(phone)) {
-      alert(INVALID_PHONE);
-      return;
-    }
-    console.log(res);
-    if (res.data.result === "success") {
-      alert(ADD_NEW_ACCOUNT_SUCCESSFULLY);
-      closePopup();
-    } else {
-      alert(ERROR_ADD_NEW_ACCOUNT_FAILED);
-    }
-  }
-
   return (
     <div className="acc-popup">
-      <div className="acc-popup-inner">
+      <form onSubmit={handleSubmit} className="acc-popup-inner">
         <div className="acc-title-pop">
           Create Account
           <button className="acc-close-btn" onClick={closePopup}>
@@ -126,19 +99,39 @@ const AccPopup = (props) => {
         <div className={`${"detail"} ${isDropDetail ? "" : "acc-dropped"}`}>
           <div className="acc-text-input">
             Email:
-            <input ref={emailRef} type="text" name="name" />
+            <input
+              value={formData.email}
+              onChange={handleChange}
+              type="text"
+              name="email"
+            />
           </div>
           <div className="acc-text-input">
             First name:
-            <input ref={firstNameRef} type="text" name="name" />
+            <input
+              value={formData.first_name}
+              onChange={handleChange}
+              type="text"
+              name="first_name"
+            />
           </div>
           <div className="acc-text-input">
             Last name:
-            <input ref={lastNameRef} type="text" name="name" />
+            <input
+              value={formData.last_name}
+              onChange={handleChange}
+              type="text"
+              name="last_name"
+            />
           </div>
           <div className="role-acc">
             Role:
-            <select ref={roleRef} className="role-select" name="status">
+            <select
+              value={formData.role_id}
+              onChange={handleChange}
+              className="role-select"
+              name="role_id"
+            >
               <option value="1">ADMIN</option>
               <option value="2">DAC</option>
               <option value="3">ADVERTISER</option>
@@ -146,19 +139,39 @@ const AccPopup = (props) => {
           </div>
           <div className="acc-text-input">
             Address:
-            <input ref={addressRef} type="text" name="name" />
+            <input
+              value={formData.address}
+              onChange={handleChange}
+              type="text"
+              name="address"
+            />
           </div>
           <div className="acc-text-input">
             Phone:
-            <input ref={phoneRef} type="text" name="name" />
+            <input
+              value={formData.phone}
+              onChange={handleChange}
+              type="text"
+              name="phone"
+            />
           </div>
           <div className="acc-text-input">
             Password:
-            <input ref={passwordRef} type="password" name="name" />
+            <input
+              value={formData.password}
+              onChange={handleChange}
+              type="password"
+              name="password"
+            />
           </div>
           <div className="acc-text-input">
             Confirm password:
-            <input ref={confirmRef} type="password" name="name" />
+            <input
+              value={formData.confirm_password}
+              onChange={handleChange}
+              type="password"
+              name="confirm_password"
+            />
           </div>
         </div>
 
@@ -166,11 +179,11 @@ const AccPopup = (props) => {
           <button className="cancel-btn" onClick={closePopup}>
             Cancel
           </button>
-          <button className="save-btn" onClick={handleSubmit}>
+          <button type="submit" className="save-btn" onClick={handleSubmit}>
             Save
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

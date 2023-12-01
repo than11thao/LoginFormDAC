@@ -8,24 +8,28 @@ import AccUpdatePopup from "../AccountPopup/AccUpdatePopup";
 
 const AccTable = (props) => {
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [isOpenPopup, setOpenPopup] = useState(false);
+  const [page, setPage] = useState(1);
+
   const handleEditClick = (record) => {
     setSelectedRecord(record);
   };
   const handleFormClose = () => {
     setSelectedRecord(null);
   };
-  const [isOpenPopup, setOpenPopup] = useState(false);
 
   const changePopup = () => {
     setOpenPopup(!isOpenPopup);
   };
+
   const rowsPerPage = 10;
-  const [page, setPage] = useState(1);
+
   const { pageData: slice, pages: range } = useTable(
     props.data || [],
     page,
     rowsPerPage
   );
+
   function renderTable() {
     return slice.map((user, key) => {
       return (

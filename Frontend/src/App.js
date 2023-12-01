@@ -5,12 +5,9 @@ import {
   dispatchLogin,
   fetchUser,
   dispatchGetUser,
-  fetchAddUser,
-  dispatchAddUser,
 } from "./redux/actions/authAction";
 
 import AccountServices from "./services/AccountServices";
-import axios from "axios";
 
 const LazyLoginPage = lazy(() => import("./views/LoginPage/LoginPage"));
 const LazyHomePage = lazy(() => import("./views/HomePage/HomePage"));
@@ -42,13 +39,6 @@ function App() {
         });
       };
       getUser();
-      const addUser = () => {
-        dispatch(dispatchLogin());
-        return fetchAddUser(token).then((res) => {
-          dispatch(dispatchAddUser(res));
-        });
-      };
-      addUser();
     }
   }, [token, dispatch]);
 
