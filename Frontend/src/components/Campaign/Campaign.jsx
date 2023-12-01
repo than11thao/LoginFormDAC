@@ -1,9 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { CSVLink } from "react-csv";
-
-import CampaignTable from "../CampaignTable/CampaignTable";
-import CreateCampaign from "../CreateCampaign/CreateCampaign";
+import "./Campaign.scss";
 
 import moment from "moment";
 
@@ -50,7 +47,7 @@ const Campaign = () => {
   }
 
   return (
-    <div className="campaign">
+    <div className="campaign-grid">
       {/* {err && showErrMsg(err)}
       {success && showSuccessMsg(success)}
       {loading && <h3>Loading.....</h3>} */}
@@ -88,12 +85,18 @@ const Campaign = () => {
             placeholder="Search"
           />
         </div>
-        <div className="camp-func-btn">
-          <CSVLink className={"camp-export-btn"} data={data}>
-            Export CSV
-          </CSVLink>
-          <button onClick={changePopup}>Create Campaign</button>
-        </div>
+      </div>
+      <div className="camp-func-btn-container">
+        <CSVLink
+          type="button"
+          className="camp-export-btn camp-button"
+          data={data}
+        >
+          Export CSV
+        </CSVLink>
+        <button className="camp-create-btn camp-button" onClick={changePopup}>
+          Create Campaign
+        </button>
       </div>
       {/* {data && <CampaignTable data={data[0].campaign} />}
       {!data && <div className="camp-nodata-text">NO DATA</div>}
