@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import * as events from "events";
 
 const AccPopup = (props) => {
+  const token = useSelector((state) => state.token);
   const [user, setUser] = useState({
     firstname: props.record ? props.record.first_name : "",
     email: props.record ? props.record.email : "",
@@ -13,7 +14,7 @@ const AccPopup = (props) => {
     address: props.record ? props.record.address : "",
     role: props.record ? props.record.role_id : "",
     lastname: props.record ? props.record.last_name : "",
-    id: props.record ? props.record.user_id : "",
+    // id: props.record ? props.record.user_id : "",
   });
 
   const handlePhoneChange = (event) => {
@@ -53,7 +54,9 @@ const AccPopup = (props) => {
     setDropDetail(!isDropDetail);
   };
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    e.preventDefault();
+
     const email = emailRef.current.value;
     const firstName = firstNameRef.current.value;
     const lastName = lastNameRef.current.value;
@@ -68,14 +71,13 @@ const AccPopup = (props) => {
       role: parseInt(role),
       address: address,
       phone: phone,
-      id: id,
     };
-    // console.log(dataAcc);
-    const res = await AccountServices.updateAccount(dataAcc);
-    if (res.data.result === "success") {
+    try {
+      const res = await AccountServices.updateAccount(dataAcc, token);
+      console.log(res);
       alert("UPDATE ACCOUNT SUCCESSFULLY!");
       closePopup();
-    } else {
+    } catch (error) {
       alert("UPDATE ACCOUNT FAILED!");
     }
   }
@@ -103,7 +105,7 @@ const AccPopup = (props) => {
             Email:
             <input
               ref={emailRef}
-              readOnly="true"
+              readOnly={true}
               value={user.email}
               type="text"
               name="name"

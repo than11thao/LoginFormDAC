@@ -14,6 +14,7 @@ const AccTable = (props) => {
   const handleEditClick = (record) => {
     setSelectedRecord(record);
   };
+
   const handleFormClose = () => {
     setSelectedRecord(null);
   };
@@ -22,7 +23,7 @@ const AccTable = (props) => {
     setOpenPopup(!isOpenPopup);
   };
 
-  const rowsPerPage = 10;
+  const rowsPerPage = 5;
 
   const { pageData: slice, pages: range } = useTable(
     props.data || [],
@@ -66,7 +67,7 @@ const AccTable = (props) => {
             <th>Actions</th>
           </tr>
         </thead>
-        {/* {console.log(props)} */}
+
         <tbody>{renderTable()}</tbody>
       </table>
       <Footer range={range} slice={slice} setPage={setPage} page={page} />

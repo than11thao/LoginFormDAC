@@ -25,8 +25,11 @@ class AccountServices {
     return api.get("/api/user_info", data);
   }
 
-  updateAccount(data) {
-    return api.put("/api/update_user", data);
+  updateAccount(data, token) {
+    return api.put("/api/update_user", data, {
+      withCredentials: true,
+      headers: { Authorization: token },
+    });
   }
 
   deleteAccount(data) {

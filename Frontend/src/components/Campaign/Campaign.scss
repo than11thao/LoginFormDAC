@@ -1,10 +1,9 @@
 .camp-datetime {
   display: flex;
-
   padding: 80px 50px 20px 50px;
 }
 .starttime-container {
-  grid-area: starttime;
+  // grid-area: starttime;
   input {
     border: none;
     border-bottom: 1px solid #9e9e9e;
@@ -17,7 +16,7 @@
   }
 }
 .endtime-container {
-  grid-area: endtime;
+  // grid-area: endtime;
   input {
     border: none;
     border-bottom: 1px solid #9e9e9e;
@@ -30,20 +29,27 @@
   }
 }
 .camp-search-container {
-  grid-area: search;
+  // grid-area: search;
+  direction: flex;
+  flex-direction: row;
   padding: 10px 50px 20px 50px;
   #search-bar {
     padding: 10px;
     width: 200px;
   }
+  .camp-func-btn-container {
+    position: absolute;
+    right: 3.125rem;
+    top: 24.7rem;
+  }
 }
 .camp-export-btn {
-  grid-area: export-btn;
+  // grid-area: export-btn;
   margin-right: 10px;
 }
-.camp-create-btn {
-  grid-area: create-btn;
-}
+// .camp-create-btn {
+//   grid-area: create-btn;
+// }
 .camp-button {
   background-color: #468faf;
   color: white;
@@ -57,16 +63,20 @@
   cursor: pointer;
 }
 .camp-func-btn-container {
-  padding: 80px 0px 0px 500px;
+  // position: static;
+
+  // right: 0;
+
+  // padding: 0px 0px 0px 500px;
 }
 .campaign-grid {
   display: grid;
   overflow: auto;
   width: 100%;
-  grid-template-areas:
-    "starttime endtime"
-    "search export-btn create-btn";
-  grid-template-columns: 1fr 1fr;
+  // grid-template-areas:
+  //   "starttime endtime"
+  //   "search export-btn create-btn";
+  // grid-template-columns: 1fr 1fr;
   gap: 20px; /* Adjust the gap as needed */
 }
 

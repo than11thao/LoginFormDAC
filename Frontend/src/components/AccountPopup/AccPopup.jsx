@@ -27,7 +27,7 @@ const initialState = {
 
 const AccPopup = (props) => {
   const token = useSelector((state) => state.token);
-  console.log(token);
+
   const [formData, setFormData] = useState(initialState);
   const [isDropDetail, setDropDetail] = useState(true);
 
@@ -39,7 +39,6 @@ const AccPopup = (props) => {
     e.preventDefault();
     try {
       const res = await AccountServices.postNewAccount(formData, token);
-      console.log(res);
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const passwordRegex =
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
@@ -69,7 +68,6 @@ const AccPopup = (props) => {
       closePopup();
     } catch (error) {
       alert(ERROR_ADD_NEW_ACCOUNT_FAILED);
-      console.error("Error adding user:", error);
     }
   };
 
@@ -127,7 +125,7 @@ const AccPopup = (props) => {
           <div className="role-acc">
             Role:
             <select
-              value={formData.role_id}
+              value={formData.role_id ? formData.role_id : "1"}
               onChange={handleChange}
               className="role-select"
               name="role_id"

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { CSVLink } from "react-csv";
 import "./Campaign.scss";
-
+import CampaignTable from "../CampaignTable/CampaignTable";
 import moment from "moment";
 
 const initialState = {
@@ -84,23 +84,27 @@ const Campaign = () => {
             ref={searchRef}
             placeholder="Search"
           />
+          <div className="camp-func-btn-container">
+            <CSVLink
+              type="button"
+              className="camp-export-btn camp-button"
+              data={data}
+            >
+              Export CSV
+            </CSVLink>
+            <button
+              className="camp-create-btn camp-button"
+              onClick={changePopup}
+            >
+              Create Campaign
+            </button>
+          </div>
         </div>
       </div>
-      <div className="camp-func-btn-container">
-        <CSVLink
-          type="button"
-          className="camp-export-btn camp-button"
-          data={data}
-        >
-          Export CSV
-        </CSVLink>
-        <button className="camp-create-btn camp-button" onClick={changePopup}>
-          Create Campaign
-        </button>
-      </div>
-      {/* {data && <CampaignTable data={data[0].campaign} />}
+
+      {data && <CampaignTable data={data} />}
       {!data && <div className="camp-nodata-text">NO DATA</div>}
-      {isOpenPopup && <AccPopup changePopup={changePopup} />} */}
+      {/* {isOpenPopup && <AccPopup changePopup={changePopup} />} */}
     </div>
   );
 };
