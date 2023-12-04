@@ -1,10 +1,17 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+
 import "./LoginForm.scss";
-import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 import { dispatchLogin } from "../../redux/actions/authAction";
-import { useDispatch } from "react-redux";
+import {
+  turnOnLoading,
+  turnOffLoading,
+} from "../../redux/actions/loadingAction";
+
 import AccountServices from "../../services/AccountServices";
+
 import {
   showSuccessMsg,
   showErrMsg,
@@ -32,6 +39,7 @@ const LoginForm = () => {
   // catch login button click event generate data sent to login API
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch(turnOnLoading());
     try {
       const res = await AccountServices.userLogin({
         email,
@@ -43,8 +51,10 @@ const LoginForm = () => {
       localStorage.setItem("firstLogin", true);
 
       dispatch(dispatchLogin());
+      dispatch(turnOffLoading());
       navigate("/");
     } catch (err) {
+      dispatch(turnOffLoading());
       err.message && setUser({ ...user, err: err.message, success: "" });
     }
   };

@@ -27,10 +27,35 @@ const Dashboard = (props) => {
   }
 
   function handleStartTimeChange(event) {
-    setStartTime(event.target.value);
+    const selectedStartTime = event.target.value;
+    const currentMoment = moment();
+    const minDateTime = currentMoment.format("YYYY-MM-DDTHH:mm");
+
+    if (moment(selectedStartTime).isBefore(minDateTime)) {
+      return;
+    }
+
+    if (moment(selectedStartTime).isAfter(endTime)) {
+      return;
+    }
+
+    setStartTime(selectedStartTime);
   }
   function handleEndTimeChange(event) {
-    setEndTime(event.target.value);
+    const selectedEndTime = event.target.value;
+    const minDateTime = moment(startTime)
+      .add(1, "days")
+      .format("YYYY-MM-DDTHH:mm");
+
+    if (moment(selectedEndTime).isBefore(minDateTime)) {
+      return;
+    }
+
+    if (moment(selectedEndTime).isBefore(startTime)) {
+      return;
+    }
+
+    setEndTime(selectedEndTime);
   }
   return (
     <div className="dash-grid">

@@ -78,10 +78,10 @@ const CampaignTable = (props) => {
         <td>{campaign.action}</td>
         <td>
           <AiFillEdit
-            className="edit-btn"
+            className="btn"
             onClick={() => handleEditClick(campaign)}
           />
-          <AiFillDelete className="del-btn" />
+          <AiFillDelete className="btn" />
         </td>
       </tr>
     ));

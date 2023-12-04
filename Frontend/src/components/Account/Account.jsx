@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import AccTable from "./AccountTable/AccTable";
 import AccPopup from "./AccountPopup/AccPopup";
 import "./Account.scss";
-import AccountServices from "../../services/AccountServices";
+
 import { useDispatch, useSelector } from "react-redux";
 import { CSVLink } from "react-csv";
 import {
@@ -34,34 +34,18 @@ const Account = () => {
 
   const { isAdmin } = auth;
   const [data, setData] = useState([initialState]);
-  const {
-    user_id,
-    first_name,
-    last_name,
-    email,
-    address,
-    phone,
-    role,
-    action,
-    err,
-    success,
-  } = data;
+  const { err, success } = data;
 
   const [dataSearch, setDataSearch] = useState({ search: null });
-  const [loading, setLoading] = useState(false);
   const [isOpenPopup, setOpenPopup] = useState(false);
   const [isReload, setReload] = useState(true); // set Callback
-
-  const user = useSelector((state) => state.users);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // if (isAdmin) {
     fetchAllUsers(token).then((res) => {
       dispatch(dispatchGetAllUsers(res));
       setData([res.data]);
-      // });
     });
   }, [token, dispatch]);
 
@@ -80,7 +64,6 @@ const Account = () => {
     <div className="account">
       {err && showErrMsg(err)}
       {success && showSuccessMsg(success)}
-      {loading && <h3>Loading.....</h3>}
       <div className="acc-filter-bar">
         <div className="acc-search-container">
           <input

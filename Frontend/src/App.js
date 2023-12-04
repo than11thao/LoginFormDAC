@@ -8,6 +8,7 @@ import {
 } from "./redux/actions/authAction";
 
 import AccountServices from "./services/AccountServices";
+import Loading from "./utils/Loading/Loading";
 
 const LazyLoginPage = lazy(() => import("./views/LoginPage/LoginPage"));
 const LazyHomePage = lazy(() => import("./views/HomePage/HomePage"));
@@ -45,6 +46,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Loading />
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           {
