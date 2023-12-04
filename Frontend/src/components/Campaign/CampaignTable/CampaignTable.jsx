@@ -2,12 +2,30 @@ import React, { useState } from "react";
 
 import "./CampaignTable.scss";
 
-import useTable from "../../store/useTable";
-import Footer from "../Footer/Footer";
+import useTable from "../../../store/useTable";
+import Footer from "../../Footer/Footer";
+
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 
+import CreateCampaign from "../CreateCampaign/CreateCampaign";
+import EditCampaign from "../CreateCampaign/EditCampaign";
+
 const CampaignTable = (props) => {
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [isOpenPopup, setOpenPopup] = useState(false);
   const [page, setPage] = useState(1);
+
+  const handleEditClick = (record) => {
+    setSelectedRecord(record);
+  };
+
+  const handleFormClose = () => {
+    setSelectedRecord(null);
+  };
+
+  const changePopup = () => {
+    setOpenPopup(!isOpenPopup);
+  };
 
   const rowsPerPage = 5;
 
@@ -18,14 +36,14 @@ const CampaignTable = (props) => {
   );
 
   function renderTable() {
-    return slice.map((campaign, key) => {
+    return slice.map((campaign) => {
       return (
         <tr key={campaign.campaign_id}>
-          <td>{campaign.campaign_id}</td>
+          <td>{campaign.name}</td>
           <td>
-            {
+            {/* {
               <td>
-                {/* {campaign.status === 1 ? (
+                {campaign.status === 1 ? (
                   <FontAwesomeIcon
                     icon="fa-duotone fa-circle"
                     style={{
@@ -41,8 +59,8 @@ const CampaignTable = (props) => {
                       "--fa-secondary-color": "#e60000",
                     }}
                   />
-                )} */}
-                {/* {
+                )}
+                {
                   <FontAwesomeIcon
                     icon="fa-duotone fa-circle"
                     style={{
@@ -50,9 +68,9 @@ const CampaignTable = (props) => {
                       "--fa-secondary-color": "#03c200",
                     }}
                   />
-                } */}
+                }
               </td>
-            }
+            } */}
           </td>
           <td>{campaign.email}</td>
           <td>{campaign.address}</td>
@@ -62,7 +80,7 @@ const CampaignTable = (props) => {
           <td>
             <AiFillEdit
               className="edit-btn"
-              //   onClick={() => handleEditClick(campaign)}
+              onClick={() => handleEditClick(campaign)}
             />
             <AiFillDelete className="del-btn" />
           </td>
@@ -89,10 +107,10 @@ const CampaignTable = (props) => {
         <tbody>{renderTable()}</tbody>
       </table>
       <Footer range={range} slice={slice} setPage={setPage} page={page} />
-      {/* {isOpenPopup && <AccPopup changePopup={changePopup} />}
+      {isOpenPopup && <CreateCampaign changePopup={changePopup} />}
       {selectedRecord && (
-        <AccUpdatePopup record={selectedRecord} onClose={handleFormClose} />
-      )} */}
+        <EditCampaign record={selectedRecord} onClose={handleFormClose} />
+      )}
     </div>
   );
 };

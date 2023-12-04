@@ -8,8 +8,8 @@ import {
   INVALID_EMAIL,
   INVALID_PASSWORD,
   INVALID_PHONE,
-} from "../../containers/alertContainer";
-import AccountServices from "../../services/AccountServices";
+} from "../../../containers/alertContainer";
+import AccountServices from "../../../services/AccountServices";
 import { useSelector } from "react-redux";
 
 const initialState = {
@@ -84,6 +84,7 @@ const AccPopup = (props) => {
       <form onSubmit={handleSubmit} className="acc-popup-inner">
         <div className="acc-title-pop">
           Create Account
+          <div className="underline"></div>
           <button className="acc-close-btn" onClick={closePopup}>
             <AiOutlineClose
               className={`${isDropDetail ? "" : "dropped-icon"}`}
@@ -174,11 +175,12 @@ const AccPopup = (props) => {
         </div>
 
         <div className="acc-footer-pop">
+          <div className="underline"></div>
           <button className="cancel-btn" onClick={closePopup}>
             Cancel
           </button>
           <button type="submit" className="save-btn" onClick={handleSubmit}>
-            Save
+            Create
           </button>
         </div>
       </form>

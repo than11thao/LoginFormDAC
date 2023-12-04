@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./AccTable.scss";
-import useTable from "../../store/useTable";
-import Footer from "../Footer/Footer";
+import useTable from "../../../store/useTable";
+import Footer from "../../Footer/Footer";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import AccPopup from "../AccountPopup/AccPopup";
 import AccUpdatePopup from "../AccountPopup/AccUpdatePopup";

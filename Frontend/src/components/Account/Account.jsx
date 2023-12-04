@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
-import AccTable from "../AccountTable/AccTable";
-import AccPopup from "../AccountPopup/AccPopup";
+import AccTable from "./AccountTable/AccTable";
+import AccPopup from "./AccountPopup/AccPopup";
 import "./Account.scss";
 import AccountServices from "../../services/AccountServices";
 import { useDispatch, useSelector } from "react-redux";
@@ -93,10 +93,12 @@ const Account = () => {
           />
         </div>
         <div className="acc-func-btn">
-          <CSVLink className={"acc-export-btn"} data={data}>
+          <CSVLink className="acc-export-btn acc-button" data={data}>
             Export CSV
           </CSVLink>
-          <button onClick={changePopup}>Create Account</button>
+          <button className="acc-create-btn acc-button" onClick={changePopup}>
+            Create Account
+          </button>
         </div>
       </div>
       {data && <AccTable data={data[0].users} />}

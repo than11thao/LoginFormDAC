@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
 import { AiOutlineDown, AiOutlineClose } from "react-icons/ai";
 import "./AccPopup.scss";
-import AccountServices from "../../services/AccountServices";
+import AccountServices from "../../../services/AccountServices";
 import { useSelector } from "react-redux";
-import * as events from "events";
 
 const AccPopup = (props) => {
   const token = useSelector((state) => state.token);
+  const [isDropDetail, setDropDetail] = useState(true);
   const [user, setUser] = useState({
     firstname: props.record ? props.record.first_name : "",
     email: props.record ? props.record.email : "",
@@ -44,7 +44,6 @@ const AccPopup = (props) => {
   const addressRef = useRef();
   const phoneRef = useRef();
   const idRef = useRef();
-  const [isDropDetail, setDropDetail] = useState(true);
 
   const closePopup = () => {
     props.onClose();
@@ -63,7 +62,7 @@ const AccPopup = (props) => {
     const role = roleRef.current.value;
     const address = addressRef.current.value;
     const phone = phoneRef.current.value;
-    const id = idRef.current.value;
+    // const id = idRef.current.value;
     const dataAcc = {
       email: email,
       first_name: firstName,
@@ -87,6 +86,7 @@ const AccPopup = (props) => {
       <div className="acc-popup-inner">
         <div className="acc-title-pop">
           Edit Account
+          <div className="underline"></div>
           <button className="acc-close-btn" onClick={props.onClose}>
             <AiOutlineClose
               className={`${isDropDetail ? "" : "dropped-icon"}`}
@@ -97,11 +97,13 @@ const AccPopup = (props) => {
           Detail
           <AiOutlineDown className="drop-btn" />
         </div>
-        <div className={`${"detail"} ${isDropDetail ? "" : "acc-dropped"}`}>
-          <div className="acc-text-input">
+        <div
+          className={`${"detail-update"} ${isDropDetail ? "" : "acc-dropped"}`}
+        >
+          <div className="acc-text-input-update">
             <input ref={idRef} value={user.id} type="hidden" name="name" />
           </div>
-          <div className="acc-text-input">
+          <div className="acc-text-input-update">
             Email:
             <input
               ref={emailRef}
@@ -111,7 +113,7 @@ const AccPopup = (props) => {
               name="name"
             />
           </div>
-          <div className="acc-text-input">
+          <div className="acc-text-input-update">
             First name:
             <input
               ref={firstNameRef}
@@ -121,7 +123,7 @@ const AccPopup = (props) => {
               name="name"
             />
           </div>
-          <div className="acc-text-input">
+          <div className="acc-text-input-update">
             Last name:
             <input
               ref={lastNameRef}
@@ -145,7 +147,7 @@ const AccPopup = (props) => {
               <option value="3">ADVERTISER</option>
             </select>
           </div>
-          <div className="acc-text-input">
+          <div className="acc-text-input-update">
             Address:
             <input
               ref={addressRef}
@@ -155,7 +157,7 @@ const AccPopup = (props) => {
               name="name"
             />
           </div>
-          <div className="acc-text-input">
+          <div className="acc-text-input-update">
             Phone:
             <input
               ref={phoneRef}
@@ -168,11 +170,12 @@ const AccPopup = (props) => {
         </div>
 
         <div className="acc-footer-pop">
+          <div className="underline"></div>
           <button className="cancel-btn" onClick={props.onClose}>
             Cancel
           </button>
           <button className="save-btn" onClick={handleSubmit}>
-            Save
+            Update
           </button>
         </div>
       </div>

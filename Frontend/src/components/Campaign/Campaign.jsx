@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import { CSVLink } from "react-csv";
 import "./Campaign.scss";
-import CampaignTable from "../CampaignTable/CampaignTable";
+import CampaignTable from "./CampaignTable/CampaignTable";
 import moment from "moment";
+import CreateCampaign from "./CreateCampaign/CreateCampaign";
 
 const initialState = {
   user_id: "",
@@ -104,7 +105,7 @@ const Campaign = () => {
 
       {data && <CampaignTable data={data} />}
       {!data && <div className="camp-nodata-text">NO DATA</div>}
-      {/* {isOpenPopup && <AccPopup changePopup={changePopup} />} */}
+      {isOpenPopup && <CreateCampaign changePopup={changePopup} />}
     </div>
   );
 };
