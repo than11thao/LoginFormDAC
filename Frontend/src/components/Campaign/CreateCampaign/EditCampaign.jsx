@@ -30,7 +30,7 @@ const EditCampaign = (props) => {
 
     setStartTime(formatCurrentDate);
     setEndTime(formatCurrentDate);
-  }, []);
+  }, [setStartTime, setEndTime]);
 
   const handleUserStatusChange = (e) => {
     setCampaign((prevCampaign) => ({

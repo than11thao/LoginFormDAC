@@ -52,18 +52,18 @@ const Account = () => {
   const [isOpenPopup, setOpenPopup] = useState(false);
   const [isReload, setReload] = useState(true); // set Callback
 
+  const user = useSelector((state) => state.users);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isAdmin) {
-      fetchAllUsers(token).then((res) => {
-        dispatch(dispatchGetAllUsers(res));
-        setData([res.data]);
-      });
-    }
-  }, [token, isAdmin, dispatch, isReload, setData]);
-
-  function handleChange(event) {}
+    // if (isAdmin) {
+    fetchAllUsers(token).then((res) => {
+      dispatch(dispatchGetAllUsers(res));
+      setData([res.data]);
+      // });
+    });
+  }, [token, dispatch]);
 
   function changePopup() {
     setOpenPopup(!isOpenPopup);
@@ -81,7 +81,6 @@ const Account = () => {
       {err && showErrMsg(err)}
       {success && showSuccessMsg(success)}
       {loading && <h3>Loading.....</h3>}
-
       <div className="acc-filter-bar">
         <div className="acc-search-container">
           <input

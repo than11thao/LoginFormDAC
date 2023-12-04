@@ -6,11 +6,9 @@ import {
 } from "../../containers/menuContainer";
 import React from "react";
 import { TbCategory } from "react-icons/tb";
-const logo = require("../../assest/user.png");
 
 const SideBar = (props) => {
   const { activeItem } = props;
-
   function clickChange(value) {
     props.clickSideBar(value);
   }
@@ -22,10 +20,14 @@ const SideBar = (props) => {
     >
       <div className="user-info">
         <div className="logo-user">
-          <img alt="#" src={logo} />
+          <img alt="#" src={props.user.user?.avatar} />
         </div>
         <div className={"name-user"}>
-          <p>User name</p>
+          <p>
+            {props.user
+              ? props.user.user?.first_name + " " + props.user.user?.last_name
+              : "Please sign in"}
+          </p>
         </div>
       </div>
       <div

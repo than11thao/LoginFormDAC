@@ -19,6 +19,7 @@ function App() {
   const auth = useSelector((state) => state.auth);
 
   const { isLogged, isAdmin } = auth;
+  // GET TOKEN into tokenReducer
   useEffect(() => {
     const firstLogin = localStorage.getItem("firstLogin");
     if (firstLogin) {

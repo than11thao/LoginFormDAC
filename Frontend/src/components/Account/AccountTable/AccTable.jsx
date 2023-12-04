@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "./AccTable.scss";
-import useTable from "../../../store/useTable";
-import Footer from "../../Footer/Footer";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import AccPopup from "../AccountPopup/AccPopup";
 import AccUpdatePopup from "../AccountPopup/AccUpdatePopup";
+
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 const AccTable = (props) => {
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -23,35 +24,37 @@ const AccTable = (props) => {
     setOpenPopup(!isOpenPopup);
   };
 
+  const handleChangePage = (event, value) => {
+    setPage(value);
+  };
+
   const rowsPerPage = 5;
 
-  const { pageData: slice, pages: range } = useTable(
-    props.data || [],
-    page,
-    rowsPerPage
-  );
+  const startIndex = (page - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const slice = props.data || [];
+  const slice_data = slice.slice(startIndex, endIndex);
 
   function renderTable() {
-    return slice.map((user, key) => {
+    return slice_data.map((user, key) => {
       return (
         <tr key={user.user_id}>
           <td>{user.user_id}</td>
-          <td>{` ${user.first_name} ${user.last_name}`}</td>
+          <td>{`${user.first_name} ${user.last_name}`}</td>
           <td>{user.email}</td>
           <td>{user.address}</td>
           <td>{user.phone}</td>
           <td>{user.role_id}</td>
           <td>
-            <AiFillEdit
-              className="edit-btn"
-              onClick={() => handleEditClick(user)}
-            />
-            <AiFillDelete className="del-btn" />
+            <AiFillEdit className="btn" onClick={() => handleEditClick(user)} />
+            <AiFillDelete className="btn" />
           </td>
         </tr>
       );
     });
   }
+
+  const count = Array.isArray(props.data) ? props.data.length : 0;
 
   return (
     <div className="acc-table-data">
@@ -70,7 +73,14 @@ const AccTable = (props) => {
 
         <tbody>{renderTable()}</tbody>
       </table>
-      <Footer range={range} slice={slice} setPage={setPage} page={page} />
+      <Stack spacing={2} className="pagination-container">
+        <Pagination
+          count={Math.ceil(count / rowsPerPage)} // Total number of pages
+          page={page}
+          onChange={handleChangePage}
+          color="primary"
+        />
+      </Stack>
       {isOpenPopup && <AccPopup changePopup={changePopup} />}
       {selectedRecord && (
         <AccUpdatePopup record={selectedRecord} onClose={handleFormClose} />

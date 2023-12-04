@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-
 import "./CampaignTable.scss";
-
-import useTable from "../../../store/useTable";
-import Footer from "../../Footer/Footer";
-
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-
 import CreateCampaign from "../CreateCampaign/CreateCampaign";
 import EditCampaign from "../CreateCampaign/EditCampaign";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import Footer from "../../Footer/Footer";
 
 const CampaignTable = (props) => {
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -27,21 +24,23 @@ const CampaignTable = (props) => {
     setOpenPopup(!isOpenPopup);
   };
 
+  const handleChangePage = (event, value) => {
+    setPage(value);
+  };
+
   const rowsPerPage = 5;
 
-  const { pageData: slice, pages: range } = useTable(
-    props.data || [],
-    page,
-    rowsPerPage
-  );
+  const startIndex = (page - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const slice = props.data || [];
+  const slice_data = slice.slice(startIndex, endIndex);
 
-  function renderTable() {
-    return slice.map((campaign) => {
-      return (
-        <tr key={campaign.campaign_id}>
-          <td>{campaign.name}</td>
-          <td>
-            {/* {
+  const renderTable = () => {
+    return slice_data.map((campaign) => (
+      <tr key={campaign.campaign_id}>
+        <td>{campaign.name}</td>
+        <td>
+          {/* {
               <td>
                 {campaign.status === 1 ? (
                   <FontAwesomeIcon
@@ -71,23 +70,22 @@ const CampaignTable = (props) => {
                 }
               </td>
             } */}
-          </td>
-          <td>{campaign.email}</td>
-          <td>{campaign.address}</td>
-          <td>{campaign.phone}</td>
-          <td>{campaign.role_id}</td>
-          <td>{campaign.action}</td>
-          <td>
-            <AiFillEdit
-              className="edit-btn"
-              onClick={() => handleEditClick(campaign)}
-            />
-            <AiFillDelete className="del-btn" />
-          </td>
-        </tr>
-      );
-    });
-  }
+        </td>
+        <td>{campaign.email}</td>
+        <td>{campaign.address}</td>
+        <td>{campaign.phone}</td>
+        <td>{campaign.role_id}</td>
+        <td>{campaign.action}</td>
+        <td>
+          <AiFillEdit
+            className="edit-btn"
+            onClick={() => handleEditClick(campaign)}
+          />
+          <AiFillDelete className="del-btn" />
+        </td>
+      </tr>
+    ));
+  };
 
   return (
     <div className="camp-table-data">
@@ -106,7 +104,16 @@ const CampaignTable = (props) => {
         </thead>
         <tbody>{renderTable()}</tbody>
       </table>
-      <Footer range={range} slice={slice} setPage={setPage} page={page} />
+
+      <Stack spacing={2} className="pagination-container">
+        <Pagination
+          count={Math.ceil(props.data?.length / rowsPerPage)} // Total number of pages
+          page={page}
+          onChange={handleChangePage}
+          color="primary"
+        />
+      </Stack>
+
       {isOpenPopup && <CreateCampaign changePopup={changePopup} />}
       {selectedRecord && (
         <EditCampaign record={selectedRecord} onClose={handleFormClose} />

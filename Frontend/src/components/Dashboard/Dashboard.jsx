@@ -18,7 +18,7 @@ const Dashboard = (props) => {
 
     setStartTime(formatCurrentDate);
     setEndTime(formatCurrentDate);
-  }, []);
+  }, [setStartTime, setEndTime]);
 
   function handleSearch() {
     let search = searchRef.current.value;

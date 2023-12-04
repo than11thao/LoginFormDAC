@@ -19,7 +19,7 @@ const CreateCampaign = (props) => {
 
     setStartTime(formatCurrentDate);
     setEndTime(formatCurrentDate);
-  }, []);
+  }, [setStartTime, setEndTime]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

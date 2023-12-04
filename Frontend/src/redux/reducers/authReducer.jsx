@@ -22,6 +22,7 @@ var authReducer = (state = initialState, action) => {
     case ACTIONS.GET_USER:
       return {
         ...state,
+        user: action.payload,
         token: action.payload.token,
         isAdmin: action.payload.isAdmin,
       };

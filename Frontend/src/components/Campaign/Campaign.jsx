@@ -27,7 +27,7 @@ const Campaign = () => {
 
     setStartTime(formatCurrentDate);
     setEndTime(formatCurrentDate);
-  }, []);
+  }, [setStartTime, setEndTime]);
 
   function changePopup() {
     setOpenPopup(!isOpenPopup);

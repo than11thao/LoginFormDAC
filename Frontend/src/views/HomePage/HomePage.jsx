@@ -11,9 +11,12 @@ import {
 import Account from "../../components/Account/Account";
 import Campaign from "../../components/Campaign/Campaign";
 import Dashboard from "../../components/Dashboard/Dashboard";
+
+import { useSelector } from "react-redux";
 const HomePage = () => {
   const [openMenu, setOpenMenu] = useState(OPEN_DASHBOARD);
   const [isOpenSideBar, setIsOpenSideBar] = useState(true);
+  const currentUser = useSelector((state) => state.auth?.user);
 
   function openSideBar() {
     return setIsOpenSideBar(!isOpenSideBar);
@@ -26,9 +29,13 @@ const HomePage = () => {
   return (
     <div className="home-page">
       <Banner />
-      <NavBar openSideBar={openSideBar} />
+      <NavBar
+        user={currentUser ? currentUser : null}
+        openSideBar={openSideBar}
+      />
       <div className="main-page">
         <SideBar
+          user={currentUser ? currentUser : null}
           show={isOpenSideBar}
           clickSideBar={clickSideBar}
           activeItem={openMenu}
